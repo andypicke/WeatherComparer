@@ -2,9 +2,16 @@
 ## various functions used in the WeatherComparer app
 
 
+#~~~~~~~~~~
+make_weather_url <- function(st_code,the_year,month_start,month_end){
+        the_url <- paste0("http://www.wunderground.com/history/airport/",st_code,"/",the_year,"/",month_start,"/1/CustomHistory.html?dayend=31&monthend=",month_end,"&yearend=",the_year,"&req_city=NA&req_state=NA&req_statename=NA&format=1")
+        }
+
+
+
 #~~~~~~~~~~ download the data for specified years
-get_yearly_weather <- function (year,st_code){
-        the_url <- paste0("http://www.wunderground.com/history/airport/",st_code,"/",year,"/1/1/CustomHistory.html?dayend=31&monthend=12&yearend=",year,"&req_city=NA&req_state=NA&req_statename=NA&format=1")
+get_yearly_weather <- function (st_code,the_year,month_start,month_end){
+        the_url <- make_weather_url(st_code,the_year,month_start,month_end)
         wea <- read_csv(the_url,skip=1,col_types = cols())
         cols <- colnames(wea)
         cols[1]<-"date"
@@ -27,9 +34,9 @@ get_yearly_weather <- function (year,st_code){
 
 
 
-# download and combine data for all years in range
+# download and combine data for years in range year1:year2
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~
-get_all_years <- function(year1,year2,st_code){
+get_all_years <- function(year1,year2,st_code,month_start,month_end){
         require(readr)
         require(lubridate)
         require(dplyr)
@@ -38,7 +45,7 @@ get_all_years <- function(year1,year2,st_code){
         for (i in seq_along(years)){
                 print(paste("getting data for ",st_code,"for year",years[i]))
                 # download data for one year
-                dat <- get_yearly_weather(years[i],st_code)
+                dat <- get_yearly_weather(st_code,years[i],month_start,month_end)
                 # append onto other data we already downloaded
                 dat_all <- bind_rows(dat_all,dat)
         }
