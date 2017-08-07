@@ -87,9 +87,9 @@ server <- function(input, output) {
                         input$button
                         isolate(
                                 ggplot(dat_avg(),aes(yday,tavg))+
-                                        geom_line()+
-                                        geom_point(data=dat(),aes(yday,max_temp))+
-                                        ggtitle(paste("Comparing ",input$the_year,"data to avgerage                                         from ", input$year1,"to",input$year2)) +
+                                        geom_line(size=2)+
+                                        geom_point(data=dat(),aes(x=yday, y=max_temp),size=3, color='red')+
+                                        ggtitle(paste("Comparing ",input$the_year,"data to avgerage from ", input$year1,"to",input$year2)) +
                                         ylab("Temperature")+
                                         xlab("Yearday")
                         )
