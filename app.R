@@ -88,7 +88,9 @@ server <- function(input, output) {
                         isolate(
                                 ggplot(dat_avg(),aes(yday,tavg))+
                                         geom_line(size=2)+
-                                        geom_point(data=dat(),aes(x=yday, y=max_temp),size=3, color='red')+
+                                        geom_line(aes(yday,sd_low),size=1.5,color='grey',linetype='dashed')+
+                                        geom_line(aes(yday,sd_high),size=1.5,color='grey',linetype='dashed')+
+                                        geom_point(data=dat(),aes(x=yday, y=max_temp),size=2, color='red')+
                                         ggtitle(paste("Comparing ",input$the_year,"data to avgerage from ", input$year1,"to",input$year2)) +
                                         ylab("Temperature")+
                                         xlab("Yearday")
