@@ -39,7 +39,7 @@ ui <- fluidPage(
         # Sidebar with a slider input for number of bins 
         sidebarLayout(
                 sidebarPanel(
-                        numericInput("the_year","Year To Compare",2016,1970,2017,step=1),
+                        numericInput("the_year","Year To Compare",2017,1970,2017,step=1),
                         numericInput("year1","Compare from year:",2015,1970,2017,step=1),
                         numericInput("year2","To year:",2016,1970,2017,step=1),
                         numericInput("month1","Between month:",1,12,1,step=1),
@@ -89,7 +89,7 @@ server <- function(input, output) {
                                 ggplot(dat_avg(),aes(yday,tavg))+
                                         geom_line()+
                                         geom_point(data=dat(),aes(yday,max_temp))+
-                                        ggtitle(paste("Comparing ",input$the_year,"data to avgerage from ", input$year1,"to",input$year2)) +
+                                        ggtitle(paste("Comparing ",input$the_year,"data to avgerage                                         from ", input$year1,"to",input$year2)) +
                                         ylab("Temperature")+
                                         xlab("Yearday")
                         )
