@@ -89,7 +89,9 @@ server <- function(input, output) {
                                 ggplot(dat_avg(),aes(yday,tavg))+
                                         geom_line()+
                                         geom_point(data=dat(),aes(yday,max_temp))+
-                                        ggtitle(paste(input$year1,"to",input$year2))
+                                        ggtitle(paste("Comparing ",input$the_year,"data to avgerage from ", input$year1,"to",input$year2)) +
+                                        ylab("Temperature")+
+                                        xlab("Yearday")
                         )
                 })
                 
