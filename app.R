@@ -36,11 +36,12 @@ ui <- fluidPage(
         # Application title
         titlePanel("Weather Comparer"),
         
+        
         # Sidebar with a slider input for number of bins 
         sidebarLayout(
                 sidebarPanel(
                         numericInput("the_year","Year To Compare",2017,1970,2017,step=1),
-                        numericInput("year1","Compare from year:",2015,1970,2017,step=1),
+                        numericInput("year1","Compare from year:",2010,1970,2017,step=1),
                         numericInput("year2","To year:",2016,1970,2017,step=1),
                         numericInput("month1","Between month:",1,12,1,step=1),
                         numericInput("month2","And month:",1,12,2,step=1),
@@ -50,6 +51,10 @@ ui <- fluidPage(
                 
                 # Show a plot of the generated distribution
                 mainPanel(
+                        
+                        h5("Use this app to compare current temperatures to past averages. Select the current year, and the year and month range to compare to. The plot shows the historical average and stand. dev., and the values from the current year."),
+                        h5("Source code is available at https://github.com/andypicke/WeatherComparer"),
+                        
                         tabsetPanel(
                                 tabPanel("Plot",plotOutput('plot1')),
                                 tabPanel("Current Data",dataTableOutput('table'))
@@ -95,7 +100,7 @@ server <- function(input, output) {
                                         geom_line(aes(yday,sd_low),size=1.5,color='grey',linetype='dashed')+
                                         geom_line(aes(yday,sd_high),size=1.5,color='grey',linetype='dashed')+
                                         geom_point(data=dat(),aes(x=yday, y=max_temp),size=2, color='red')+
-                                        ggtitle(paste("Comparing ",input$the_year,"data to avgerage from ", input$year1,"to",input$year2)) +
+                                        ggtitle(paste("Comparing ",input$the_year,"data to average from ", input$year1,"to",input$year2)) +
                                         ylab("Temperature")+
                                         xlab("Yearday")
                         )
