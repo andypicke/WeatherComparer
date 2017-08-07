@@ -90,6 +90,7 @@ server <- function(input, output) {
                         input$button
                         isolate(
                                 ggplot(dat_avg(),aes(yday,tavg))+
+                                        theme(text = element_text(size = 16)) +
                                         geom_line(size=2)+
                                         geom_line(aes(yday,sd_low),size=1.5,color='grey',linetype='dashed')+
                                         geom_line(aes(yday,sd_high),size=1.5,color='grey',linetype='dashed')+
