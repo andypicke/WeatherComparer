@@ -52,7 +52,7 @@ ui <- fluidPage(
                 mainPanel(
                         tabsetPanel(
                                 tabPanel("Plot",plotOutput('plot1')),
-                                tabPanel("Data",dataTableOutput('table'))
+                                tabPanel("Current Data",dataTableOutput('table'))
                         )
                         
                 )
