@@ -40,12 +40,12 @@ ui <- fluidPage(
         sidebarLayout(
                 sidebarPanel(
                         numericInput("the_year","Year To Compare",2016,1970,2017,step=1),
-                        numericInput("year1","Year 1",2015,1970,2017,step=1),
-                        numericInput("year2","Year 2",2016,1970,2017,step=1),
-                        numericInput("month1","Month 1",1,12,1,step=1),
-                        numericInput("month2","Month 2",1,12,2,step=1),
-                        textInput("stcode","Airport Station Code",value = "KDEN"),
-                        actionButton("button", "An action button")
+                        numericInput("year1","Compare from year:",2015,1970,2017,step=1),
+                        numericInput("year2","To year:",2016,1970,2017,step=1),
+                        numericInput("month1","Between month:",1,12,1,step=1),
+                        numericInput("month2","And month month:",1,12,2,step=1),
+                        textInput("stcode","At Airport Station Code:",value = "KDEN"),
+                        actionButton("button", "Execute!")
                 ),
                 
                 # Show a plot of the generated distribution
