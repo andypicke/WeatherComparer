@@ -101,9 +101,9 @@ server <- function(input, output) {
                                         geom_line(size=2) +
                                         geom_line(aes(yday,sd_low),size=1.5,color='grey',linetype='dashed') +
                                         geom_line(aes(yday,sd_high),size=1.5,color='grey',linetype='dashed') +
-                                        geom_point(data=dat(),aes(x=yday, y=max_temp),size=2, color='red') +
+                                        geom_point(data=dat(),aes(x=yday, y=mean_temp),size=2, color='red') +
                                         ggtitle(paste("Comparing ",input$the_year,"data to average from ", input$year1,"to",input$year2)) +
-                                        ylab("Temperature")+
+                                        ylab("Mean Daily Temperature")+
                                         xlab("Yearday")
                         )
                 })
@@ -113,7 +113,7 @@ server <- function(input, output) {
                         isolate(
                                 ggplot(dat_avg(),aes(yday,tavg))+
                                         geom_line()+
-                                        geom_point(data=dat(),aes(yday,max_temp))+
+                                        geom_point(data=dat(),aes(yday,mean_temp))+
                                         ggtitle(paste(input$year1,"to",input$year2))
                         )
                 })

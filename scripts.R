@@ -61,7 +61,7 @@ get_all_years <- function(year1,year2,st_code,month_start,month_end){
 get_avg_temps <- function(dat_all){
         dat_all %>% 
                 group_by(yday) %>% 
-                summarise(tavg=mean(max_temp,na.rm=TRUE),sd_low=tavg-sd(max_temp,na.rm=TRUE), sd_high=tavg+sd(max_temp,na.r=TRUE)) 
+                summarise(tavg=mean(mean_temp,na.rm=TRUE),sd_low=tavg-sd(mean_temp,na.rm=TRUE), sd_high=tavg+sd(mean_temp,na.r=TRUE)) 
 }
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
