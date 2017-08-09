@@ -58,6 +58,9 @@ ui <- fluidPage(
                         h5("Use this app to compare current temperatures to past averages. Select the current year, and the year and month range to compare to. The plot shows the historical average and stand. dev., and the values from the current year."),
                         h5("Source code is available at https://github.com/andypicke/WeatherComparer"),
                         
+                        downloadButton('downloadData', 'Download Current Data'),
+                        downloadButton('downloadData_hist', 'Download historical Data'),
+                        
                         tabsetPanel(
                                 tabPanel("Plot",plotOutput('plot1')),
                                 tabPanel("Plot2",plotOutput('plot2')),
@@ -87,10 +90,25 @@ server <- function(input, output) {
                 # download weather for 'current' year
                 dat <- reactive({get_yearly_weather(input$stcode,input$the_year,month_start=input$month1, month_end=input$month2) })
                 
+                # output data frame as table to view in app
                 output$table <- renderDataTable(dat())
 
+                # make table downloadable as csv
+                output$downloadData <- downloadHandler(
+                        filename = function() { 'current_data.csv' }, content = function(file) {
+                                write.csv(dat(), file, row.names = FALSE)
+                        })
+                
+                
                 # download weather for all years in range
                 dat_all <- reactive({get_all_years(input$year1,input$year2,input$stcode,input$month1,input$month2)})
+                
+                # make table downloadable as csv
+                output$downloadData_hist <- downloadHandler(
+                        filename = function() { 'hist_data.csv' }, content = function(file) {
+                                write.csv(dat_all(), file, row.names = FALSE)
+                        })
+                
                 
                 # average temp for each day
                 dat_avg <- reactive({get_avg_temps(dat_all())})
