@@ -60,7 +60,9 @@ ui <- fluidPage(
                         
                         tabsetPanel(
                                 tabPanel("Plot",plotOutput('plot1')),
+                                tabPanel("Plot2",plotOutput('plot2')),
                                 tabPanel("Current Data",dataTableOutput('table')),
+                                tabPanel("merge Data",dataTableOutput('tablemerge')),
                                 tabPanel("Historical Avg Data",dataTableOutput('table_avg'))
                         )
                         
@@ -80,13 +82,14 @@ ui <- fluidPage(
 server <- function(input, output) {
         
         
-        dat <- reactive({get_yearly_weather(input$stcode,input$the_year,month_start=input$month1, month_end=input$month2) })
-        
-        output$table <- renderDataTable(dat())
-        
-        # download weather for all years in range
         observeEvent(input$button,{
                 
+                # download weather for 'current' year
+                dat <- reactive({get_yearly_weather(input$stcode,input$the_year,month_start=input$month1, month_end=input$month2) })
+                
+                output$table <- renderDataTable(dat())
+
+                # download weather for all years in range
                 dat_all <- reactive({get_all_years(input$year1,input$year2,input$stcode,input$month1,input$month2)})
                 
                 # average temp for each day
@@ -94,14 +97,14 @@ server <- function(input, output) {
                 
                 output$table_avg <- renderDataTable(dat_avg())
                 
+                # join current and average so we can plot differences
+                dat_merge <- reactive({left_join(dat(),dat_avg())})
+                
+                output$tablemerge <- renderDataTable(dat_merge())
                 
                 
-                #                output$plot1 <- renderPlot({
-                #                        input$button
-                #                        isolate(ggplot(dat(),aes(yday,max_temp))+
-                #                                        geom_point())
-                #                })
                 
+                # Plot historical average and current data
                 output$plot1 <- renderPlot({
                         input$button
                         isolate(
@@ -117,13 +120,14 @@ server <- function(input, output) {
                         )
                 })
                 
+                
+                # Plot DIFFERENCES between current year and historical averages
                 output$plot2 <- renderPlot({
                         input$button
                         isolate(
-                                ggplot(dat_avg(),aes(yday,tavg))+
-                                        geom_line()+
-                                        geom_point(data=dat(),aes(yday,mean_temp))+
-                                        ggtitle(paste(input$year1,"to",input$year2))
+                                ggplot(dat_merge(),aes(x=yday,y=mean_temp-tavg)) +
+                                        theme(text = element_text(size = 16)) +
+                                        geom_point()
                         )
                 })
                 
