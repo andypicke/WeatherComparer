@@ -148,7 +148,8 @@ server <- function(input, output) {
                                         ylab('Current - average') +
                                         xlab('Yearday') +
                                         ggtitle('Difference between current year and hist avg.') +
-                                        geom_bar(stat='identity',fill='grey') 
+                                        geom_col(aes(fill=(mean_temp-tavg)<0)) 
+                                        #geom_bar(stat='identity',fill='grey') 
                                         
                                         
                         )
