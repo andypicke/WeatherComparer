@@ -2,7 +2,13 @@
 ## various functions used in the WeatherComparer app
 
 
-#~~~~~~~~~~
+
+# Load dataframe w/ list of airport stations and codes
+#~~~~~~~~~~~~~
+sta_df <- read.csv('USAirportWeatherStations.csv')
+
+
+#~~~~~~~~~~~~
 make_weather_url <- function(st_code,the_year,month_start,month_end){
         the_url <- paste0("http://www.wunderground.com/history/airport/",st_code,"/",the_year,"/",month_start,"/1/CustomHistory.html?dayend=31&monthend=",month_end,"&yearend=",the_year,"&req_city=NA&req_state=NA&req_statename=NA&format=1")
         }
