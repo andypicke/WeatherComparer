@@ -9,7 +9,7 @@ make_weather_url <- function(st_code,the_year,month_start,month_end){
 
 
 
-#~~~~~~~~~~ download the data for specified years
+#~~~~~~~~~~ download the data for specified year and month range
 get_yearly_weather <- function (st_code,the_year,month_start,month_end){
         the_url <- make_weather_url(st_code,the_year,month_start,month_end)
         wea <- read_csv(the_url,skip=1,col_types = cols())
@@ -18,9 +18,10 @@ get_yearly_weather <- function (st_code,the_year,month_start,month_end){
         colnames(wea)<-cols
         wea <- wea %>% 
                 mutate(date=as.Date(date))%>%
-                mutate(yday=yday(date)) %>%
-                mutate(year=year(date)) %>%
-                select(date,year,yday,`Max TemperatureF`,`Mean TemperatureF`,`Min TemperatureF`) %>%
+                mutate(yday=yday(date))   %>%
+                mutate(year=year(date))   %>%
+                mutate(st_code = st_code) %>%
+                select(st_code,date,year,yday,`Max TemperatureF`,`Mean TemperatureF`,`Min TemperatureF`) %>%
                 rename(max_temp=`Max TemperatureF`) %>%
                 rename(mean_temp=`Mean TemperatureF`) %>%
                 rename(min_temp=`Min TemperatureF`) %>%
