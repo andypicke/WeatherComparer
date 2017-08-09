@@ -3,8 +3,8 @@ title: WeatherComparer
 account: andypicke
 server: shinyapps.io
 appId: 186894
-bundleId: 931901
+bundleId: 934400
 url: https://andypicke.shinyapps.io/WeatherComparer/
-when: 1502156508.29811
+when: 1502294634.51868
 asMultiple: FALSE
 asStatic: FALSE
