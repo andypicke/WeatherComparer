@@ -37,7 +37,7 @@ source("scripts.R")
 ui <- fluidPage(
         
         # Application title
-        titlePanel("Weather Comparer"),
+        titlePanel("It's getting hot (cold) in here"),
         
         
         # Sidebar with a slider input for number of bins 
