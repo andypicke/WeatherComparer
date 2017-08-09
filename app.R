@@ -63,7 +63,7 @@ ui <- fluidPage(
                         
                         tabsetPanel(
                                 tabPanel("Plot",plotOutput('plot1')),
-                                tabPanel("Plot2",plotOutput('plot2')),
+                                tabPanel("Difference Plot",plotOutput('plot2')),
                                 tabPanel("Current Data",dataTableOutput('table')),
                                 tabPanel("merge Data",dataTableOutput('tablemerge')),
                                 tabPanel("Historical Avg Data",dataTableOutput('table_avg'))
@@ -145,8 +145,14 @@ server <- function(input, output) {
                         isolate(
                                 ggplot(dat_merge(),aes(x=yday,y=mean_temp-tavg)) +
                                         theme(text = element_text(size = 16)) +
-                                        geom_point()
+                                        ylab('Current - average') +
+                                        xlab('Yearday') +
+                                        ggtitle('Difference between current year and hist avg.') +
+                                        geom_bar(stat='identity',fill='grey') 
+                                        
+                                        
                         )
+
                 })
                 
         })
