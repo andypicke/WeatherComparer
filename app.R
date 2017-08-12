@@ -136,7 +136,7 @@ server <- function(input, output) {
                                         scale_colour_manual(name='', values=c('mean'='black','now'='red', '1std'='grey')) +
                                         guides(colour = guide_legend(override.aes = list(linetype=c(1,1,0), shape=c(NA, NA,16),fill=c(NA,NA,NA))))+
                                         theme(text = element_text(size = 16)) +
-                                        ggtitle(paste("Comparing ",input$the_year,"data to average from ", input$year1,"to",input$year2)) +
+                                        ggtitle(paste("Comparing ",input$the_year," to average from ", input$year1,"to",input$year2,'at ',input$stcode)) +
                                         ylab("Mean Daily Temperature")+
                                         xlab("Yearday")
                         )
@@ -151,7 +151,7 @@ server <- function(input, output) {
                                         theme(text = element_text(size = 16)) +
                                         ylab('Current - average') +
                                         xlab('Yearday') +
-                                        ggtitle('Difference between current year and hist avg.') +
+                                        ggtitle(paste('Difference between ',input$the_year, ' and hist avg. at ',input$stcode)) +
                                         geom_col(aes(fill=(mean_temp-tavg)<0)) 
                                         #geom_bar(stat='identity',fill='grey') 
                                         
