@@ -130,11 +130,12 @@ server <- function(input, output) {
                         input$button
                         isolate(
                                 ggplot(dat_avg(),aes(yday,tavg))+
-                                        geom_ribbon(aes(ymin=sd_low,ymax=sd_high,color='1std'),fill='grey') +
-                                        theme(text = element_text(size = 16)) +
+                                        geom_ribbon(aes(ymin=sd_low,ymax=sd_high,color='1std'),fill='grey',show.legend = TRUE) +
                                         geom_line(size=2,aes(color="mean")) +
                                         geom_point(data=dat(),aes(x=yday, y=mean_temp,color='now'),size=2) +
                                         scale_colour_manual(name='', values=c('mean'='black','now'='red', '1std'='grey')) +
+                                        guides(colour = guide_legend(override.aes = list(linetype=c(1,1,0), shape=c(NA, NA,16),fill=c(NA,NA,NA))))+
+                                        theme(text = element_text(size = 16)) +
                                         ggtitle(paste("Comparing ",input$the_year,"data to average from ", input$year1,"to",input$year2)) +
                                         ylab("Mean Daily Temperature")+
                                         xlab("Yearday")
