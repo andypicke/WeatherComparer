@@ -55,7 +55,8 @@ ui <- fluidPage(
                 # Show a plot of the generated distribution
                 mainPanel(
                         
-                        h5("Use this app to compare current temperatures to past averages. Select the current year, and the year and month range to compare to. The plot shows the historical average and stand. dev., and the values from the current year."),
+                        h5("Use this app to compare current temperatures to past averages. Select the current year, and the year and month range to compare to."),
+                        h5("The plot shows the historical average (black), +/- 1 standard deviation (gray), and the values from the current year (red)."),
                         h5("Source code is available at https://github.com/andypicke/WeatherComparer"),
                         
                         downloadButton('downloadData', 'Download Current Data'),
@@ -129,11 +130,11 @@ server <- function(input, output) {
                         input$button
                         isolate(
                                 ggplot(dat_avg(),aes(yday,tavg))+
-                                        geom_ribbon(aes(ymin=sd_low,ymax=sd_high),fill='grey') +
-                                        
+                                        geom_ribbon(aes(ymin=sd_low,ymax=sd_high,color='1std'),fill='grey') +
                                         theme(text = element_text(size = 16)) +
-                                        geom_line(size=2) +
-                                        geom_point(data=dat(),aes(x=yday, y=mean_temp),size=2, color='red') +
+                                        geom_line(size=2,aes(color="mean")) +
+                                        geom_point(data=dat(),aes(x=yday, y=mean_temp,color='now'),size=2) +
+                                        scale_colour_manual(name='', values=c('mean'='black','now'='red', '1std'='grey')) +
                                         ggtitle(paste("Comparing ",input$the_year,"data to average from ", input$year1,"to",input$year2)) +
                                         ylab("Mean Daily Temperature")+
                                         xlab("Yearday")
