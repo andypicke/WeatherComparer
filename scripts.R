@@ -1,21 +1,35 @@
 
-## various functions used in the WeatherComparer app
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# This script contains various functions used in the WeatherComparer app.
+# I put them here to make the app.R file cleaner and more readable.
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Load dataframe w/ list of airport stations and codes
-#~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 sta_df <- read.csv('USAirportWeatherStations.csv')
 
 
-#~~~~~~~~~~~~
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# function to make url to get weather data for a given year, station, and time period
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 make_weather_url <- function(st_code,the_year,month_start,month_end){
         the_url <- paste0("http://www.wunderground.com/history/airport/",st_code,"/",the_year,"/",month_start,"/1/CustomHistory.html?dayend=31&monthend=",month_end,"&yearend=",the_year,"&req_city=NA&req_state=NA&req_statename=NA&format=1")
         }
 
 
 
-#~~~~~~~~~~ download the data for specified year and month range
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# function to actually download the data for specified year, station, and month range
+# calls *make_weather_url* function above
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 get_yearly_weather <- function (st_code,the_year,month_start,month_end){
         the_url <- make_weather_url(st_code,the_year,month_start,month_end)
         wea <- read_csv(the_url,skip=1,col_types = cols())
@@ -33,16 +47,16 @@ get_yearly_weather <- function (st_code,the_year,month_start,month_end){
                 rename(min_temp=`Min TemperatureF`) %>%
                 filter(max_temp<150) %>%
                 filter(max_temp>-50)
-        #filter(yday<80)
         wea
 }
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
-# download and combine data for years in range year1:year2
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# download and combine data for years in range year1:year2, for specified station
+# calls *get_yearly_weather* function above
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 get_all_years <- function(year1,year2,st_code,month_start,month_end){
         require(readr)
         require(lubridate)
@@ -63,8 +77,10 @@ get_all_years <- function(year1,year2,st_code,month_start,month_end){
 
 
 
-# compute averages for output of get_all_years
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# compute averages and standard deviation for output of *get_all_years* function
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 get_avg_temps <- function(dat_all){
         dat_all %>% 
                 group_by(yday) %>% 
