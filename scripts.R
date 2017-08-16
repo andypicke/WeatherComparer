@@ -16,75 +16,27 @@ sta_df <- read.csv('USAirportWeatherStations.csv')
 
 
 
-
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# function to make url to get weather data for a given year, station, and time period
+# function to download cleaned weather data for a station
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-make_weather_url <- function(st_code,the_year,month_start,month_end){
-        the_url <- paste0("http://www.wunderground.com/history/airport/",st_code,"/",the_year,"/",month_start,"/1/CustomHistory.html?dayend=31&monthend=",month_end,"&yearend=",the_year,"&req_city=NA&req_state=NA&req_statename=NA&format=1")
-        }
-
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# function to actually download the data for specified year, station, and month range
-# calls *make_weather_url* function above
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-get_yearly_weather <- function (st_code,the_year,month_start,month_end){
-        the_url <- make_weather_url(st_code,the_year,month_start,month_end)
-        wea <- read_csv(the_url,skip=1,col_types = cols())
-        cols <- colnames(wea)
-        cols[1]<-"date"
-        colnames(wea)<-cols
-        wea <- wea %>% 
-                mutate(date=as.Date(date))%>%
-                mutate(yday=yday(date))   %>%
-                mutate(year=year(date))   %>%
-                mutate(st_code = st_code) %>%
-                select(st_code,date,year,yday,`Max TemperatureF`,`Mean TemperatureF`,`Min TemperatureF`) %>%
-                rename(max_temp=`Max TemperatureF`) %>%
-                rename(mean_temp=`Mean TemperatureF`) %>%
-                rename(min_temp=`Min TemperatureF`) %>%
-                filter(max_temp<150) %>%
-                filter(max_temp>-50)
-        wea
+get_weather_cleaned <- function(st_code){
+        url_base <- 'https://s3-us-west-2.amazonaws.com/wundergrounddaily/cleaned/'
+        s3_url <- paste0(url_base, st_code, '_cleaned.csv')
+        wea<-read.csv(s3_url)
+        wea$date <- lubridate::ymd(wea$date)
 }
 
 
 
-
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# download and combine data for years in range year1:year2, for specified station
-# calls *get_yearly_weather* function above
+# compute daily averages and standard deviation over all years
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-get_all_years <- function(year1,year2,st_code,month_start,month_end){
-        require(readr)
-        require(lubridate)
-        require(dplyr)
-        years <- seq(year1,year2)
-        dat_all <- data.frame()
-        for (i in seq_along(years)){
-                print(paste("getting data for ",st_code,"for year",years[i]))
-                # download data for one year
-                dat <- get_yearly_weather(st_code,years[i],month_start,month_end)
-                # append onto other data we already downloaded
-                dat_all <- bind_rows(dat_all,dat)
-        }
-        # return dat_all
-        dat_all
-}
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# compute averages and standard deviation for output of *get_all_years* function
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-get_avg_temps <- function(dat_all){
-        dat_all %>% 
+get_avg_temps <- function(wea){
+        wea %>% 
                 group_by(yday) %>% 
-                summarise(tavg=mean(mean_temp,na.rm=TRUE),sd_low=tavg-sd(mean_temp,na.rm=TRUE), sd_high=tavg+sd(mean_temp,na.r=TRUE)) 
+                summarise(tavg=mean(mean_temp,na.rm=TRUE),
+                          sd_low=tavg-sd(mean_temp,na.rm=TRUE),
+                          sd_igh=tavg+sd(mean_temp,na.r=TRUE)) 
 }
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
