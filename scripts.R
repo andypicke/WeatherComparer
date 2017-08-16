@@ -27,6 +27,16 @@ get_weather_cleaned <- function(st_code){
 }
 
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# function to return data for only 'current' year
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+get_current_year <- function(wea){
+        wea_current <- wea %>%
+                filter(year=input$the_year)
+        wea_current
+}
+
+
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # compute daily averages and standard deviation over all years
