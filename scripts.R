@@ -40,6 +40,7 @@ get_yearly_weather <- function (st_code,the_year,month_start,month_end){
                 mutate(date=as.Date(date))%>%
                 mutate(yday=yday(date))   %>%
                 mutate(year=year(date))   %>%
+                mutate(day=day(date)) %>%
                 mutate(st_code = st_code) %>%
                 select(st_code,date,year,yday,`Max TemperatureF`,`Mean TemperatureF`,`Min TemperatureF`) %>%
                 rename(max_temp=`Max TemperatureF`) %>%

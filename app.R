@@ -13,8 +13,9 @@
 # OUTPUTS
 # Plots of temp from year_to_compare, with historical average from year_1 to year_2
 #
+# Many functions are abstracted away in *scripts.R* to make this file cleaner
 #
-
+#
 # To Do
 # Make leaflet map of stations so you can find the station code
 # 
@@ -55,7 +56,8 @@ ui <- fluidPage(
                 # Show a plot of the generated distribution
                 mainPanel(
                         
-                        h5("Use this app to compare current temperatures to past averages. Select the current year, and the year and month range to compare to."),
+                        h3("Use this app to compare current temperatures to past averages."),
+                        h5("Select the current year, and the year and month range to compare to."),
                         h5("The plot shows the historical average (black), +/- 1 standard deviation (gray), and the values from the current year (red)."),
                         h5("Source code is available at https://github.com/andypicke/WeatherComparer"),
                         
@@ -74,6 +76,7 @@ ui <- fluidPage(
                 )
         )
 )
+
 
 
 
@@ -149,9 +152,9 @@ server <- function(input, output) {
                         isolate(
                                 ggplot(dat_merge(),aes(x=yday,y=mean_temp-tavg)) +
                                         theme(text = element_text(size = 16)) +
-                                        ylab('Current - average') +
+                                        ylab('Temperature Difference [F]') +
                                         xlab('Yearday') +
-                                        ggtitle(paste('Difference between ',input$the_year, ' and hist avg. at ',input$stcode)) +
+                                        ggtitle(paste( input$the_year, 'Daily Mean Temp. - historical avg. at',input$stcode)) +
                                         geom_col(aes(fill=(mean_temp-tavg)<0)) 
                                         #geom_bar(stat='identity',fill='grey') 
                                         
