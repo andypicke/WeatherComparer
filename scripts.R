@@ -24,6 +24,7 @@ get_weather_cleaned <- function(st_code){
         s3_url <- paste0(url_base, st_code, '_cleaned.csv')
         wea<-read.csv(s3_url)
         wea$date <- lubridate::ymd(wea$date)
+        wea
 }
 
 
