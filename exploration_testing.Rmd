@@ -1,0 +1,85 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+get_weather_cleaned <- function(st_code){
+        url_base <- 'https://s3-us-west-2.amazonaws.com/wundergrounddaily/cleaned/'
+        s3_url <- paste0(url_base, st_code, '_cleaned.csv')
+        wea<-read.csv(s3_url)
+        wea$date <- lubridate::ymd(wea$date)
+        wea
+}
+```
+
+```{r}
+st_code <- "PAVL"
+wea <- get_weather_cleaned(st_code)
+head(wea)
+```
+
+```{r}
+library(tidyverse)
+glimpse(wea)
+```
+
+
+
+```{r}
+library(ggplot2)
+ggplot(wea,aes(date,mean_temp))+geom_point()
+```
+
+
+
+```{r}
+get_current_year <- function(wea,the_year){
+        wea_current <- wea %>%
+                filter(year==the_year)
+        wea_current
+}
+
+weac <- get_current_year(wea,2016)
+head(weac)
+```
+
+
+```{r}
+get_all_years <- function(year1,year2,st_code,month_start,month_end){
+        url_base <- 'https://s3-us-west-2.amazonaws.com/wundergrounddaily/cleaned/'
+        s3_url <- paste0(url_base, st_code, '_cleaned.csv')
+        wea<-read.csv(s3_url)
+        wea$date <- lubridate::ymd(wea$date)
+        wea <- wea %>% 
+                filter(year>=year1 & year<=year2) #%>% 
+               # filter(month>=month_start & month<=month_end)
+        wea
+}        
+wea_all <- get_all_years(1980,2016,'KDEN',2,5)
+head(wea_all)
+
+```
+
+
+```{r}
+get_avg_temps <- function(wea){
+        wea_avg <- wea %>% 
+                group_by(yday) %>% 
+                summarise(tavg=mean(mean_temp,na.rm=TRUE),
+                          sd_low=tavg-sd(mean_temp,na.rm=TRUE),
+                          sd_high=tavg+sd(mean_temp,na.r=TRUE)) 
+        wea_avg
+}
+```
+
+```{r}
+wea_avg <- get_avg_temps(wea)
+head(wea_avg)
+```
+
+

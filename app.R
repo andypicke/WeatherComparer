@@ -94,7 +94,7 @@ server <- function(input, output) {
         observeEvent(input$button,{
                 
                 # download weather for 'current' year
-                dat <- reactive({get_yearly_weather(input$stcode,input$the_year,month_start=input$month1, month_end=input$month2) })
+                dat <- reactive({get_weather_cleaned_oneyear(input$stcode,input$the_year,month_start=input$month1, month_end=input$month2) })
                 
                 # output data frame as table to view in app
                 output$table <- renderDataTable(dat())
