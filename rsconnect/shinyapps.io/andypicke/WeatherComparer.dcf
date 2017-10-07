@@ -1,10 +1,13 @@
 name: WeatherComparer
 title: WeatherComparer
+username:
 account: andypicke
 server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
 appId: 186894
-bundleId: 938559
+bundleId: 985193
 url: https://andypicke.shinyapps.io/WeatherComparer/
-when: 1502558871.166
+when: 1505667189.53122
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: exploration_testing.nb.html|exploration_testing.Rmd
