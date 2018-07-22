@@ -12,7 +12,27 @@ Right now it only does temperature, but I am planning to expand it for other var
 
 Data is gathered from <https://www.wunderground.com/>, as described in <https://github.com/andypicke/wunderground_data>.
 
-## To-Do
-- Add a leaflet map to let you find stations and their codes
-- Add other variables (max,min temps, precipiation, wind, etc.)
-- Do by date rather than yearday? I like yearday for easily lining up data, but it occurred to me that maybe using yearday and averaging over years that include leap years is not quite correct?
+## Using the app
+
+### Input
+On the sidebar, you can select several options:
+* Year to Compare: This is the data you would like to compare to the historical averages.
+* Compare from Year/to year: This is the historical data you will compare to.
+* Months to include in comparison.
+* Station (airport)
+
+After making selections, click the *execute* button to update the results.
+
+### Output
+* Historical temperatures, averaged over the years chosen, is plotted as black line. The gray shading shows +/- 1 standard deviation of the historical temperatures over this time period. Current data is potted as red dots.
+
+* The difference plot makes it easier to see periods where the current temperatures are warmer/colder than the historical average.
+
+* Station info lists all the available weather stations and their codes, which can be intered in the inputs.
+
+* The data is also given in tables for inspection, and is available for download as csv files.s
+
+
+## Current status
+
+As noted on <https://github.com/andypicke/wunderground_data>, historical weather data is no longer free to download from the wunderground API. Thus, the app currently works only for data through part of 2017. I plan to try find a new method to obtain temperature data for the aiport stations so the app can be used to examine current conditions as well. Stay tuned...s
