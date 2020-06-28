@@ -1,3 +1,7 @@
+# !Current status!
+
+Unfortunately, historical weather data is no longer free to download from the wunderground API, and I took down the data I had on S3. Thus, the __app currently doesn't work__ :( . I plan to try find a new source of weather data in the future. Stay tuned...
+
 # WeatherComparer
 
 A Shiny App to compare weather from one year to a historical average over several years.
@@ -10,7 +14,7 @@ You can also download *scripts.R* and *app.R* and run locally on your own machin
 
 Right now it only does temperature, but I am planning to expand it for other variables.
 
-Data is gathered from <https://www.wunderground.com/>, as described in <https://github.com/andypicke/wunderground_data>.
+Data is gathered from <https://www.wunderground.com/>.
 
 ## Using the app
 
@@ -32,7 +36,3 @@ After making selections, click the *execute* button to update the results.
 
 * The data is also given in tables for inspection, and is available for download as csv files.s
 
-
-## Current status
-
-As noted on <https://github.com/andypicke/wunderground_data>, historical weather data is no longer free to download from the wunderground API. Thus, the app currently works only for data through part of 2017. I plan to try find a new method to obtain temperature data for the aiport stations so the app can be used to examine current conditions as well. Stay tuned...s
